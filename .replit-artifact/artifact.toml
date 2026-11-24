@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "VisionGuard AI"
+description = "A Flask-powered product inspection workspace with real custom YOLOv8 inference, SQLite inspection history, live quality analytics, and model readiness reporting."
+version = "1.0.0"
+id = "artifacts/visionguard-ai"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 24837
+
+[services.development]
+run = "pnpm --filter @workspace/visionguard-ai run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/visionguard-ai", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/visionguard-ai/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24837"
+BASE_PATH = "/"
